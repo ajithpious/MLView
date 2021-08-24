@@ -13,6 +13,7 @@ import plotly.express as px
 
 # Create your views here.
 
+data=None
 def home(request):
     if(request.method=='POST'):
         userName=request.POST['username']
@@ -93,13 +94,11 @@ def selectCol(request):
                     values=""
                     for i in range(valueCount.shape[0]):
                         values=values+str(valueCount.index[i])+":"+str(valueCount[i])+","
+                    values=values[:-1]
                     column.append(values)
                 ls.append(column)
                 index.append(valueCount.name)
             columns.append("Value Count")
-            ls
-            columns
-            index
             cat_df=pd.DataFrame(ls,columns=columns,index=index)
             cat_df.insert(0,"Column Name",cat_cols.columns)
             
