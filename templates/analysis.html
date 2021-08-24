@@ -95,7 +95,7 @@
             </div>
 
         </nav>
-        <form enctype="multipart/form-data" action="/home/upload/" method="POST" >
+        <form enctype="multipart/form-data" action="/home/selectCol" method="POST" >
             {% csrf_token %}
         <div class="container">
         
@@ -109,18 +109,29 @@
                             <div class="col">
                                 <div class="form-group">
                                   <label for="header">Header rows</label>
-                                  <input name="header" type="number" class="form-control validate" id="headerRows" value=""/>
+                                  <input name="header" type="number" class="form-control validate" style="width: 6em;" id="headerRows" value=""/>
                                   <input type="checkbox" style="margin-top: 1em" name="noHeader" value="1"/>
                                   <label for="noHeader">No Header</label>
                                 </div>
-                                </div>
                             </div>
+                            <div class="col">
+                                <div class="form-group">
+                                <label for="mltype">Learning Type</label> 
+                                <br>                 
+                                <input type="radio" id="regression" name="mltype" value="0" checked/>
+                                <label for="regression">Regression</label>
+                                <br>
+                                <input type="radio" id="classification" name="mltype" value="1"/>
+                                <label for="classification" >Classification</label>
+                            </div>
+                            </div>
+                          </div>
                         </div>
                     </div>
 
                 <div class="col">
                     <div style="padding-top:1cm">
-                    <input type="file" name="myfile" class="btn btn-primary text-uppercase"/>
+                    <input type="file" name="myfile" class="btn btn-primary text-uppercase" required/>
                     <button type="submit" class="btn btn-secondary text-uppercase">
                         Analyze
                       </button>
@@ -130,7 +141,7 @@
             </div>
             <!-- row -->
 
-             <div class="container mt-5">
+             <!-- <div class="container mt-5">
                 <div class="row-4 tm-content-row">
                   <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 tm-block-col">
                     <div class="tm-bg-primary-dark tm-block tm-block-products">
@@ -165,7 +176,81 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
+        {% if selectCol %}
+        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 tm-block-col">
+            <div class="">
+            <label style="color: aliceblue;">Numerical Columns</label>
+              <div class="tm-product-table-container">
+                <table class="table table-hover tm-table-small tm-product-table">
+                    
+                  <thead>
+                    <tr>
+                        <th scope="col">&nbsp;</th>
+                        {% for i in numData.columns%}
+                        <th scope="col">{{i}}</th>
+                        {%endfor%}
+                    </tr>
+                  </thead>
+                  <tbody>  
+                    {% for row in numValues %}
+                        <tr>
+                            <th scope="row"><input type="checkbox" name="columns" value="{{row.0}}" /></th>
+                            {%for dataVal in row%}
+                                <td><b>{{dataVal}}</b></td>
+                            {%endfor%}
+                        </tr>
+                    {%endfor%}
+                  </tbody>
+                </table>
+              </div>
+            {%if cat%}
+            <label style="color: aliceblue;">Categorical Columns</label>
+            <div class="tm-product-table-container">
+                <table class="table table-hover tm-table-small tm-product-table">
+                    
+                  <thead>
+                    <tr>
+                        <th scope="col">&nbsp;</th>
+                        {% for i in cat_df.columns%}
+                        <th scope="col">{{i}}</th>
+                        {%endfor%}
+                    </tr>
+                  </thead>
+                  <tbody>  
+                    {% for row in catValues %}
+                        <tr>
+                            <th scope="row"><input type="checkbox" name="columns" value="{{row.0}}" /></th>
+                            {%for dataVal in row%}
+                                <td><b>{{dataVal}}</b></td>
+                            {%endfor%}
+                        </tr>
+                    {%endfor%}
+                  </tbody>
+                </table>
+              </div>
+              {%endif%}
+              <!-- table container -->
+              <a
+                href="add-product.html"
+                class="btn btn-primary btn-block text-uppercase mb-3">Add new product</a>
+              <button class="btn btn-primary btn-block text-uppercase">
+                Delete selected products
+              </button>
+            </div>
+          </div>
+        {%endif%}
+
+
+
+
+
+
+
+
+
+
+
         <footer class="tm-footer row tm-mt-small">
             <div class="col-12 font-weight-light">
                 <p class="text-center text-white mb-0 px-4 small">
