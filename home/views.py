@@ -25,6 +25,7 @@ def home(request):
             return redirect(request.META['HTTP_REFERER'])
    
 def upload(request):
+    global data
     if(request.method=="POST"):
         if(request.FILES.get('myfile',None)==None):
             return redirect(request.META['HTTP_REFERER'])
@@ -60,6 +61,7 @@ def upload(request):
 
             return render(request,"analyzeResult.html",{"des":describe,"plots":checkbox,"values":list(describe.values),"graph":graph})
 def selectCol(request):
+    global data
     if(request.method=="POST"):
         noHeader=request.POST.get('noHeader',None)
         data=None
@@ -127,6 +129,20 @@ def plot(data,checkbox):
                 axis=axis[:columns]                
                 data.plot(kind="density",subplots=True,sharex=False,ax=axis)
                 plt.savefig("static/img/plot.png")
+
+def cleanse(request):
+    if(request.method=="POST"):
+        features=request.POST.getlist('columns')
+        target=request.POST.getlist('target')
+        print("target=",target)
+        print("feature=",features)
+        if(target[0] in features):
+            messages.error(request,"Target column cannot be in features")
+            return redirect(request.META['HTTP_REFERER'])
+
+
+    return HttpResponse(features+target)
+
 
 
 def getData(request,data):

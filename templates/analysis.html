@@ -143,7 +143,7 @@
         </form>
         {% if selectCol %}
         <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 tm-block-col">
-            <form enctype="multipart/form-data" action="/home/" method="POST" >
+            <form enctype="multipart/form-data" action="/home/cleanse" onsubmit="return checkForm();" method="POST" >
                 {% csrf_token %}
             <div class="">
             <label style="color: aliceblue;">Numerical Columns</label>
@@ -161,9 +161,10 @@
                   </thead>
                   <tbody>  
                     {% for row in numValues %}
+                    
                         <tr>
-                            <th scope="row"><input type="checkbox" name="columns" value="{{row.0}}" /></th>
-                            <th scope="row"><input type="radio" name="target" value="{{row.0}}" required/></th>
+                            <th scope="row"><input type="checkbox" name="columns" id="{{row.0}}" value="{{row.0}}"/></th>
+                            <th scope="row"><input type="radio" name="target" value="{{row.0}}" required onclick="radioCheck('{{row.0}}')"/></th>
                             {%for dataVal in row%}
                                 <td><b>{{dataVal}}</b></td>
                             {%endfor%}
@@ -189,8 +190,8 @@
                   <tbody>  
                     {% for row in catValues %}
                         <tr>
-                            <th scope="row"><input type="checkbox" name="columns" value="{{row.0}}"/></th>
-                            <th scope="row"><input type="radio" name="target" value="{{row.0}}" required /></th>
+                            <th scope="row"><input type="checkbox" name="columns" id="{{row.0}}" value="{{row.0}}"/></th>
+                            <th scope="row"><input type="radio" name="target" value="{{row.0}}" required onclick="radioCheck('{{row.0}}')" /></th>
 
                             {%for dataVal in row%}
                                 <td><b>{{dataVal}}</b></td>
@@ -259,6 +260,43 @@
                 updateBarChart();                
             });
         })
+    // (function()
+    // {
+
+
+    // })();
+    function radioCheck(radio)
+    {
+        
+        let str="input[type='checkbox'][name='columns']";
+        let check=document.querySelectorAll(str);
+        for(let i=0;i<check.length;i++)
+        {
+            if(check[i].getAttribute("value")==radio)
+            {
+                check[i].checked=false
+                check[i].disabled=true
+            }
+            else{
+                check[i].disabled=false
+            }
+        }
+    }
+    function checkForm()
+    {
+        let str="input[type='checkbox'][name='columns']:checked";
+        let checkBoxes=document.querySelectorAll(str)
+        console.log(checkBoxes)
+        if(checkBoxes.length>0)
+        {
+            return true
+        }
+        else
+        {
+        alert("check atleast one checkbox");
+        return false
+        }
+    }
     </script>
 </body>
 
