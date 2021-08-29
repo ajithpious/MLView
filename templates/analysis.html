@@ -143,7 +143,7 @@
         </form>
         {% if selectCol %}
         <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 tm-block-col">
-            <form enctype="multipart/form-data" action="/home/cleanse" onsubmit="return checkForm();" method="POST" >
+            <form enctype="multipart/form-data" action="/cleanse/" onsubmit="return checkForm();" method="POST" >
                 {% csrf_token %}
             <div class="">
             <label style="color: aliceblue;">Numerical Columns</label>
@@ -208,7 +208,7 @@
                 href="add-product.html"
                 class="btn btn-primary btn-block text-uppercase mb-3">Add new product</a> -->
               <button type="submit" class="btn btn-primary btn-block text-uppercase">
-                Clean the data
+                Next:Clean Data
               </button>
             </div>
             </form>

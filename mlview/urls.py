@@ -20,5 +20,6 @@ from django.urls.conf import include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("home/",include("home.urls")),
-    path("",include("login.urls"))
+    path("",include("login.urls")),
+    path("cleanse/",include("prepare.urls"))
 ]

@@ -16,6 +16,7 @@ import plotly.express as px
 
 data=None
 mltype=None
+cat_cols=None
 def home(request):
     if(request.method=='POST'):
         userName=request.POST['username']
@@ -69,7 +70,7 @@ def upload(request):
 
             return render(request,"analyzeResult.html",{"des":describe,"plots":checkbox,"values":list(describe.values),"graph":graph})
 def selectCol(request):
-    global data
+    global data,cat_cols
     if(request.method=="POST"):
         noHeader=request.POST.get('noHeader',None)
         data=None
@@ -148,7 +149,10 @@ def cleanse(request):
 
     return HttpResponse(features+target)
 
-
+def getDataFrame():
+    return data
+def getCatCols():
+    return cat_cols.columns
 
 def getData(request,data):
     describe=data.describe();
