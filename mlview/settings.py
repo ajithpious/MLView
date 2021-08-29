@@ -82,8 +82,19 @@ WSGI_APPLICATION = 'mlview.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+
+        'NAME': 'devp0g7010lckj',
+
+        'USER': 'bqocmdsxiegqxh',
+
+        'PASSWORD': '7a8730d127abacc1abd7087a2b925919df34d388c9cb733a1b240d9309fd7314',
+
+        'HOST': 'ec2-184-73-198-174.compute-1.amazonaws.com',
+
+        'PORT': '5432',
+
     }
 }
 
