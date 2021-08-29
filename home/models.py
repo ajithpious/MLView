@@ -7,3 +7,4 @@ class user(models.Model):
     class Meta:
         db_table="user"
 
+
