@@ -1,3 +1,4 @@
+from .models import user
 from typing import Sequence
 from django.http import request
 from django.http.response import HttpResponse, HttpResponseRedirect
@@ -14,15 +15,22 @@ import plotly.express as px
 # Create your views here.
 
 data=None
+mltype=None
 def home(request):
     if(request.method=='POST'):
         userName=request.POST['username']
         passWord=request.POST['password']
-        if(userName=="admin" and passWord=="admin"):
+        # cUser=user.objects.get(pk=userName)
+        cUser = user.objects.filter(pk=userName).first()
+        if(cUser==None):
+            messages.error(request, 'Username or Password Incorrect')
+            return redirect(request.META['HTTP_REFERER'])
+        elif(passWord==str(cUser.password)):
             return render(request,"home.html")
         else:
             messages.error(request, 'Username or Password Incorrect')
             return redirect(request.META['HTTP_REFERER'])
+            
    
 def upload(request):
     global data
@@ -113,6 +121,8 @@ def login(request):
     return render(request,"login.html")
 def analyse(request):
     return render(request,"analysis.html")
+
+
 def plot(data,checkbox):
     for plot in checkbox:
             if(plot=="density"):
@@ -134,12 +144,7 @@ def cleanse(request):
     if(request.method=="POST"):
         features=request.POST.getlist('columns')
         target=request.POST.getlist('target')
-        print("target=",target)
-        print("feature=",features)
-        if(target[0] in features):
-            messages.error(request,"Target column cannot be in features")
-            return redirect(request.META['HTTP_REFERER'])
-
+        
 
     return HttpResponse(features+target)
 
