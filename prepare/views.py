@@ -16,4 +16,4 @@ def cleanse(request):
         na_cols=data.isna().sum(axis=0)
         print(na_cols)
         
-    return HttpResponse(features+target)
+    return render(request,"clean.html") 
