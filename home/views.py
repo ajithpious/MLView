@@ -87,6 +87,7 @@ def selectCol(request):
             data=pd.read_csv(request.FILES['myfile'],header=head-1)
             describe=data.describe();
         describe=describe.transpose()
+        rows=data.shape[0]
         describe.insert(0,"Column Name",describe.index)
         cat_cols=data.select_dtypes(exclude="number")
         ls=[]
@@ -113,10 +114,7 @@ def selectCol(request):
             cat_df=pd.DataFrame(ls,columns=columns,index=index)
             cat_df.insert(0,"Column Name",cat_cols.columns)
             
-        return render(request,"analysis.html",{"numData":describe,"numValues":list(describe.values),"selectCol":True,"cat":cat,"cat_df":cat_df,"catValues":list(cat_df.values)})
-
-               
-        
+        return render(request,"analysis.html",{"numData":describe,"numValues":list(describe.values),"selectCol":True,"cat":cat,"cat_df":cat_df,"catValues":list(cat_df.values),"rows":rows})   
     return render(request,"analysis.html",{"selectCol":True})
 def login(request):
     return render(request,"login.html")
