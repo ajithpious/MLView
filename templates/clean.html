@@ -185,8 +185,12 @@
                             cell.style.color = "red";
                             text = document.createTextNode(element[key]);
 
+                        } else if (element[key] == " ") {
+                            cell.style.backgroundcolor = "red"
+                            text = document.createTextNode(element[key]);
                         } else {
                             text = document.createTextNode(element[key]);
+
                         }
                         cell.appendChild(text);
                     }

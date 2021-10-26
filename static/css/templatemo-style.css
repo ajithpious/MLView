@@ -414,14 +414,6 @@ thead {
     font-weight: 600;
 }
 
-.btn-secondary {
-    color: #fff;
-    background-color: #4416e9;
-    border: 2px solid #2366f5;
-    font-size: 90%;
-    font-weight: 600;
-}
-
 .btn {
     border-radius: 0;
     padding: 13px 28px;

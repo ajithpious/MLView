@@ -33,44 +33,45 @@ def home(request):
             return redirect(request.META['HTTP_REFERER'])
             
    
-def upload(request):
-    global data
-    if(request.method=="POST"):
-        if(request.FILES.get('myfile',None)==None):
-            return redirect(request.META['HTTP_REFERER'])
-        noHeader=request.POST.get('noHeader',None)
-        if(noHeader):
-            data=pd.read_csv(request.FILES['myfile'],header=None)
-            describe=data.describe();
-            describe.insert(0,"Parameter",describe.index)
-            checkbox=request.POST.getlist('plot')
-            plot(data,checkbox)
-            return render(request,"analyzeResult.html",{"des":describe,"plots":checkbox,"values":list(describe.values)})
-        head=request.POST.get('header',None)
-        print("head=",head)
-        if(head=="" or int(head)<1):
-            data=pd.read_csv(request.FILES['myfile'],header=0)
-            describe=data.describe();
-            describe.insert(0,"Parameter",describe.index)
-            checkbox=request.POST.getlist('plot')
-            plot(data,checkbox)
-            return render(request,"analyzeResult.html",{"des":describe,"plots":checkbox,"values":list(describe.values)})
-        elif(int(head)>0):
-            head=int(head)
-            data=pd.read_csv(request.FILES['myfile'],header=head-1)
-            describe=data.describe();
-            describe.insert(0,"Parameter",describe.index)
-            checkbox=request.POST.getlist('plot')
-            plot(data,checkbox)
+# def upload(request):
+#     global data
+#     if(request.method=="POST"):
+#         if(request.FILES.get('myfile',None)==None):
+#             return redirect(request.META['HTTP_REFERER'])
+#         noHeader=request.POST.get('noHeader',None)
+#         if(noHeader):
+#             data=pd.read_csv(request.FILES['myfile'],header=None)
+#             describe=data.describe();
+#             describe.insert(0,"Parameter",describe.index)
+#             checkbox=request.POST.getlist('plot')
+#             plot(data,checkbox)
+#             return render(request,"analyzeResult.html",{"des":describe,"plots":checkbox,"values":list(describe.values)})
+#         head=request.POST.get('header',None)
+#         print("head=",head)
+#         if(head=="" or int(head)<1):
+#             data=pd.read_csv(request.FILES['myfile'],header=0)
+#             describe=data.describe();
+#             describe.insert(0,"Parameter",describe.index)
+#             checkbox=request.POST.getlist('plot')
+#             plot(data,checkbox)
+#             return render(request,"analyzeResult.html",{"des":describe,"plots":checkbox,"values":list(describe.values)})
+#         elif(int(head)>0):
+#             head=int(head)
+#             data=pd.read_csv(request.FILES['myfile'],header=head-1)
+#             describe=data.describe();
+#             describe.insert(0,"Parameter",describe.index)
+#             checkbox=request.POST.getlist('plot')
+#             plot(data,checkbox)
 
-            fig=px.scatter(x=[1,2,3,4,5,6],y=[1,2,3,4,5,6])
-            graph=fig.to_html(full_html=False,default_height=500, default_width=700)
+#             fig=px.scatter(x=[1,2,3,4,5,6],y=[1,2,3,4,5,6])
+#             graph=fig.to_html(full_html=False,default_height=500, default_width=700)
 
-            # return render(request,"analyzeResult.html",{"des":describe,"plots":checkbox,"values":list(describe.values)})
+#             # return render(request,"analyzeResult.html",{"des":describe,"plots":checkbox,"values":list(describe.values)})
 
-            return render(request,"analyzeResult.html",{"des":describe,"plots":checkbox,"values":list(describe.values),"graph":graph})
+#             return render(request,"analyzeResult.html",{"des":describe,"plots":checkbox,"values":list(describe.values),"graph":graph})
 def selectCol(request):
     global data,cat_cols
+    data=None
     if(request.method=="POST"):
         noHeader=request.POST.get('noHeader',None)
         data=None
@@ -143,8 +144,6 @@ def cleanse(request):
     if(request.method=="POST"):
         features=request.POST.getlist('columns')
         target=request.POST.getlist('target')
-        
-
     return HttpResponse(features+target)
 
 def getDataFrame():
