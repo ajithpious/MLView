@@ -21,10 +21,11 @@ def getRows(request):
     df=getDataFrame()
     # print(df)
     rows=request.GET.get('rows',None)
-    # new_df=df.head(int(rows)).values.tolist()
-    # resp={'data':json.dumps(new_df),'columns':json.dumps(list(df.columns.values))}
-    new_df=df.head(int(rows)).to_json(orient="records")
-    resp={"data":new_df,"columns":json.dumps(list(df.columns.values))}
+    new_df=df.head(int(rows)).values.tolist()
+    new_df=[list(map(str,a)) for a in new_df]
+    resp={'data':json.dumps(new_df),'columns':json.dumps(list(df.columns.values))}
+    # new_df=df.head(int(rows)).to_json(orient="records")
+    # resp={"data":new_df,"columns":json.dumps(list(df.columns.values))}
     return JsonResponse(resp)
 
         

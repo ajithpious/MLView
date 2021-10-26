@@ -112,19 +112,14 @@
                     <button class="btn-new btn-secondary" id="getRow">Get Rows</button>
                 </div>
             </div>
-            <span></span>
+
             <div class="row tm-content-row">
                 <div class="col">
-                    <table id="table">
-                        <caption>Smaple Data Table</caption>
-                        <thead>
-                            <tr>
-                                <th>Field 1</th>
-                                <th>Field 2</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tBody"></tbody>
-                    </table>
+                    <div class="tm-product-table-container">
+                        <table class="table table-hover tm-table-small tm-product-table" id="rowsTable">
+
+                        </table>
+                    </div>
                 </div>
             </div>
             <!-- </form> -->
@@ -157,25 +152,46 @@
                     },
                     dataType: 'json',
                     success: function(data, status, xhr) {
-                        console.log(data.data);
-                        $('#test').html(data);
-                        var html = "";
-                        // $.each(data, function(i, item) {
-                        //     html = '<tr><td>' + data.data + '</td></tr>'
-                        // });
-                        // $('#tBody').append(html)
-                        let columns = JSON.parse(data.columns)
+
+                        let columns = JSON.parse(data.columns);
                         let values = JSON.parse(data.data);
-                        console.log("js=", values);
-                        for (var i in values) {
-                            for (var j in values[i]) {
-                                console.log("data=", values[i][j]);
-                            }
-                        }
+                        let table = document.querySelector("table[id='rowsTable']");
+                        table.innerHTML = "";
+                        generateTable(table, values)
+                        generateTableHead(table, columns)
                     }
 
                 });
             });
+
+            function generateTableHead(table, data) {
+                let thead = table.createTHead();
+                let row = thead.insertRow();
+                for (let key of data) {
+                    let th = document.createElement("th");
+                    let text = document.createTextNode(key);
+                    th.appendChild(text);
+                    row.appendChild(th);
+                }
+            }
+
+            function generateTable(table, data) {
+                for (let element of data) {
+                    let row = table.insertRow();
+                    for (key in element) {
+                        let cell = row.insertCell();
+                        let text;
+                        if (isNaN(element[key])) {
+                            cell.style.color = "red";
+                            text = document.createTextNode(element[key]);
+
+                        } else {
+                            text = document.createTextNode(element[key]);
+                        }
+                        cell.appendChild(text);
+                    }
+                }
+            }
         </script>
 </body>
 
