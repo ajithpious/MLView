@@ -74,18 +74,21 @@ def selectCol(request):
     data=None
     if(request.method=="POST"):
         noHeader=request.POST.get('noHeader',None)
-        data=None
+        # data=None
         describe=None
+        head=request.POST.get('header',None)
         if(noHeader):
             data=pd.read_csv(request.FILES['myfile'],header=None)
             describe=data.describe();
-        head=request.POST.get('header',None)
-        if(head=="" or int(head)<1):
+        elif(head=="" or int(head)<1):
             data=pd.read_csv(request.FILES['myfile'],header=0)
             describe=data.describe();
         elif(int(head)>0):
             head=int(head)
             data=pd.read_csv(request.FILES['myfile'],header=head-1)
+            describe=data.describe();
+        else:
+            data=pd.read_csv(request.FILES['myfile'],header=0)
             describe=data.describe();
         describe=describe.transpose()
         rows=data.shape[0]
