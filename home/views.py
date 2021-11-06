@@ -1,3 +1,4 @@
+from utilities.dataStorage import saveDb
 from .models import user
 from typing import Sequence
 from django.http import request
@@ -11,10 +12,11 @@ from django.contrib import messages
 import math
 import numpy as np
 import plotly.express as px
+from sqlalchemy import create_engine
 
 # Create your views here.
 
-data=None
+# data=None
 mltype=None
 cat_cols=None
 def home(request):
@@ -27,7 +29,9 @@ def home(request):
             messages.error(request, 'Username or Password Incorrect')
             return redirect(request.META['HTTP_REFERER'])
         elif(passWord==str(cUser.password)):
-            return render(request,"home.html")
+            response=render(request,"home.html");
+            response.set_cookie("username",userName)
+            return response
         else:
             messages.error(request, 'Username or Password Incorrect')
             return redirect(request.META['HTTP_REFERER'])
@@ -70,7 +74,7 @@ def home(request):
 
 #             return render(request,"analyzeResult.html",{"des":describe,"plots":checkbox,"values":list(describe.values),"graph":graph})
 def selectCol(request):
-    global data,cat_cols
+    global cat_cols
     data=None
     if(request.method=="POST"):
         noHeader=request.POST.get('noHeader',None)
@@ -90,6 +94,8 @@ def selectCol(request):
         else:
             data=pd.read_csv(request.FILES['myfile'],header=0)
             describe=data.describe();
+        username=str(request.COOKIES['username'])
+        saveDb(data,username+"_data")
         describe=describe.transpose()
         rows=data.shape[0]
         describe.insert(0,"Column Name",describe.index)
@@ -98,6 +104,7 @@ def selectCol(request):
         cat=False
         columns=[]
         index=[]
+
         cat_df=pd.DataFrame(np.arange(10))
         if(not cat_cols.empty):
             cat=True
@@ -125,7 +132,6 @@ def login(request):
 def analyse(request):
     return render(request,"analysis.html")
 
-
 def plot(data,checkbox):
     for plot in checkbox:
             if(plot=="density"):
@@ -149,8 +155,8 @@ def cleanse(request):
         target=request.POST.getlist('target')
     return HttpResponse(features+target)
 
-def getDataFrame():
-    return data
+# def getDataFrame():
+#     return data
 def getCatCols():
     return cat_cols.columns
 

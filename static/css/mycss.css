@@ -5,7 +5,7 @@
 
 /*Add an overlay to the entire page blocking any further presses to buttons or other elements.*/
 
-.overlay {
+.lds-dual-ring.overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -22,16 +22,16 @@
 
 .lds-dual-ring {
     display: inline-block;
-    width: 80px;
-    height: 80px;
+    width: 300px;
+    height: 300px;
 }
 
 .lds-dual-ring:after {
     content: " ";
     display: block;
-    width: 64px;
-    height: 64px;
-    margin: 5% auto;
+    width: 100px;
+    height: 100px;
+    margin: 20% auto;
     border-radius: 50%;
     border: 6px solid #fff;
     border-color: #fff transparent #fff transparent;
