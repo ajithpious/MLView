@@ -15,7 +15,7 @@ def cleanse(request):
         target=request.POST.getlist('target')
         username=request.COOKIES['username']
         data=readData(username+"_data")
-        cat_cols=getCatCols()
+        cat_cols=data.select_dtypes(exclude="number").columns
         data=data[features+target]
         na_cols=data.isna().sum(axis=0)
         print(na_cols)

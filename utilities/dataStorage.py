@@ -9,5 +9,7 @@ def readData(table_name):
     engine=create_engine('postgresql://bqocmdsxiegqxh:7a8730d127abacc1abd7087a2b925919df34d388c9cb733a1b240d9309fd7314@ec2-184-73-198-174.compute-1.amazonaws.com:5432/devp0g7010lckj')
     con=engine.connect()
     data=pd.read_sql("select * from "+table_name,con)
+    con.close()
+    engine.dispose()
     return data
 
