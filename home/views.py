@@ -99,14 +99,16 @@ def selectCol(request):
         describe=describe.transpose()
         rows=data.shape[0]
         describe.insert(0,"Column Name",describe.index)
-        cat_cols=data.select_dtypes(exclude="number")
+        # cat_cols=data.select_dtypes(exclude="number")
+        cat_cols=[x for x in data.columns if(x not in describe.index.values)]
+        print(cat_cols)
         ls=[]
         cat=False
         columns=[]
         index=[]
 
         cat_df=pd.DataFrame(np.arange(10))
-        if(not cat_cols.empty):
+        if(len(cat_cols)>=1):
             cat=True
             for col in cat_cols:
                 column=[]
@@ -123,7 +125,7 @@ def selectCol(request):
                 index.append(valueCount.name)
             columns.append("Value Count")
             cat_df=pd.DataFrame(ls,columns=columns,index=index)
-            cat_df.insert(0,"Column Name",cat_cols.columns)
+            cat_df.insert(0,"Column Name",cat_cols)
             
         return render(request,"analysis.html",{"numData":describe,"numValues":list(describe.values),"selectCol":True,"cat":cat,"cat_df":cat_df,"catValues":list(cat_df.values),"rows":rows})   
     return render(request,"analysis.html",{"selectCol":True})

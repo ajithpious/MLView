@@ -19,7 +19,8 @@ def cleanse(request):
         data=data[features+target]
         na_cols=data.isna().sum(axis=0)
         print(na_cols)
-        return render(request,"clean.html")
+        fillna_methods=['Mean','Median','Most Frequent','Constant']
+        return render(request,"clean.html",{'na_cols':list(zip(na_cols.values,na_cols.index)),'col_names':list(na_cols.index),'fillna_methods':fillna_methods})
 def getRows(request):
     username=request.COOKIES['username']
     df=readData(username+"_data")
@@ -30,7 +31,7 @@ def getRows(request):
     resp={'data':json.dumps(new_df),'columns':json.dumps(list(df.columns.values))}
     # new_df=df.head(int(rows)).to_json(orient="records")
     # resp={"data":new_df,"columns":json.dumps(list(df.columns.values))}
-    return JsonResponse(resp)
+    return JsonResponse(resp) 
 
         
      

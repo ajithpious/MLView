@@ -46,3 +46,91 @@
         transform: rotate(360deg);
     }
 }
+
+
+/* Style the button that is used to open and close the collapsible content */
+
+.collapsible {
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: center;
+    outline: none;
+    font-size: 15px;
+}
+
+
+/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+
+.act,
+.collapsible:hover {
+    background-color: #ccc;
+}
+
+
+/* Style the collapsible content. Note: hidden by default */
+
+.content {
+    padding-left: 50px;
+    padding-top: 20px;
+    display: none;
+    overflow: hidden;
+}
+
+.collapsible:after {
+    content: '\02795';
+    /* Unicode character for "plus" sign (+) */
+    font-size: 13px;
+    color: white;
+    float: right;
+    margin-left: 5px;
+}
+
+.act:after {
+    content: "\2796";
+    /* Unicode character for "minus" sign (-) */
+}
+
+.fillna {
+    padding-left: 20px;
+    display: none;
+}
+
+.custom-select1 {
+    width: 100%;
+    border: 2px;
+    color: #acc6de;
+    height: 50px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    -o-appearance: none;
+    appearance: none;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    -ms-border-radius: 0;
+    -o-border-radius: 0;
+    border-radius: 5px;
+    padding: 15px;
+    background: url(../img/arrow-down.png) 98% no-repeat #50657b;
+}
+
+
+/* .custom-select1:focus {
+    outline: 0;
+}
+
+.custom-select1 {
+    height: 50px;
+    border-radius: 20;
+} */
+
+.myselect {
+    color: #acc6de;
+    background-color: rgb(80, 101, 123);
+    border-radius: 5px;
+    border-color: black;
+}
