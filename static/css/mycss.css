@@ -134,3 +134,8 @@
     border-radius: 5px;
     border-color: black;
 }
+
+.right {
+    text-align: right;
+    padding-right: 20px;
+}

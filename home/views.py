@@ -96,6 +96,7 @@ def selectCol(request):
             describe=data.describe();
         username=str(request.COOKIES['username'])
         saveDb(data,username+"_data")
+        saveDb(data,username+"_copy")
         describe=describe.transpose()
         rows=data.shape[0]
         describe.insert(0,"Column Name",describe.index)

@@ -107,13 +107,14 @@
                     <h1 class="text-white mt-5 mb-5"><b>Clean the Data</b></h1>
                 </div>
             </div>
-            <div class="row tm-content-row">
+            <div class="row">
                 <div class="col">
                     <!-- <label for="rows" aria-hidden="true">Rows</label> -->
                     <input name="rows" type="number" id="rows" placeholder="# of Rows" style="background-color: #60738e;border-color: transparent;box-shadow: 0 0 0 0.1rem rgb(180, 206, 233, 0.5);" />
                     <button class="btn-new btn-secondary" id="getRow">Get Rows</button>
                 </div>
             </div>
+            <br>
 
             <div class="row tm-content-row">
                 <div class="col">
@@ -133,9 +134,14 @@
             </div>
             <div class='row'>
                 <div class='col'>
-                    <label>
+                    <!-- <label>
                         <h3 class="text-white">NA Statistics</h3>
-                    </label>
+                    </label> -->
+                    <div class="row">
+                        <div class='col'>
+                            <h3 class="text-white">NA Statistics</h3>
+                        </div>
+                    </div>
                     <div class="tm-product-table-container">
                         <table class="table table-hover tm-table-small tm-product-table">
                             <thead>
@@ -157,35 +163,48 @@
                 </div>
 
                 <div class='col'>
-                    <label>
-                        <h3 class="text-white">Methods</h3>
-                    </label>
-                    <div class="tm-product-table-container">
-                        {% for col in col_names %}
+                    <form enctype="multipart/form-data" action="/cleanse/cleanna" method="POST">
+                        {% csrf_token %}
                         <div class="row">
-                            <button type="button" class="collapsible">{{col}}</button>
-                            <div class="content">
-                                <div class="form-group">
-                                    <!-- <button class="btn-new btn-secondary" id="getRow">Drop NA</button> -->
-                                    <input type="radio" id="{{col}}_dropna" value="0" name="na_{{col}}" checked/>
-                                    <label for="{{col}}_dropna">Drop NA</label>
-                                    <br>
-                                    <input type="radio" id="{{col}}_fillna" value="1" name="na_{{col}}" />
-                                    <label for="{{col}}_fillna">Fill NA</label>
-                                    <div class="fillna">
-                                        <select class="myselect">
+                            <div class="col">
+                                <h3 class="text-white">Methods</h3>
+                            </div>
+                            <div class="col">
+                                <div class='right'>
+                                    <button type="submit" class="btn-new btn-secondary">Apply Filters</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tm-product-table-container">
+                            {% for col in col_names %}
+                            <div class="row">
+                                <button type="button" class="collapsible">{{col}}</button>
+                                <div class="content">
+                                    <div class="form-group">
+                                        <input type="radio" id="{{col}}_nofill" value="0" name="{{col}}" checked/>
+                                        <label for="{{col}}_nofill">No Fill</label>
+                                        <br>
+                                        <input type="radio" id="{{col}}_dropna" value="1" name="{{col}}" />
+                                        <label for="{{col}}_dropna">Drop NA</label>
+                                        <br>
+                                        <input type="radio" id="{{col}}_fillna" value="2" name="{{col}}" />
+                                        <label for="{{col}}_fillna">Fill NA</label>
+                                        <div class="fillna">
+                                            <select id="{{col}}_sel" name="{{col}}_sel" class="myselect">
                                             {% for method  in fillna_methods%} 
                                               <option value="{{method}}">{{method}}</option>
                                             {%endfor%}
                                         </select>
 
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            <p></p>
+                            {%endfor%}
                         </div>
-                        <p></p>
-                        {%endfor%}
-                    </div>
+                    </form>
                 </div>
 
             </div>

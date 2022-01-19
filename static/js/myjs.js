@@ -31,3 +31,16 @@ for (i = 0; i < sel1.length; i++) {
 
     });
 }
+var sel1 = document.querySelectorAll('[id$="_nofill"]');
+
+for (i = 0; i < sel1.length; i++) {
+    sel1[i].addEventListener('click', function() {
+
+        var id = this.getAttribute('id');
+        let col = id.replace("nofill", "")
+        newid = col + "fillna"
+        let con = document.getElementById(newid);
+        con.nextElementSibling.nextElementSibling.style.display = "none"
+
+    });
+}
