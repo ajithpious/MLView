@@ -139,7 +139,7 @@
                     </label> -->
                     <div class="row">
                         <div class='col'>
-                            <h3 class="text-white">NA Statistics</h3>
+                            <h3 class="text-white">NA Statistics(rows:{{rows}})</h3>
                         </div>
                     </div>
                     <div class="tm-product-table-container">
@@ -163,47 +163,68 @@
                 </div>
 
                 <div class='col'>
-                    <form enctype="multipart/form-data" action="/cleanse/cleanna" method="POST">
-                        {% csrf_token %}
-                        <div class="row">
-                            <div class="col">
-                                <h3 class="text-white">Methods</h3>
-                            </div>
-                            <div class="col">
-                                <div class='right'>
-                                    <button type="submit" class="btn-new btn-secondary">Apply Filters</button>
+                    <!-- <form enctype="multipart/form-data" action="/cleanse/cleanna" method="POST">
+                        {% csrf_token %} -->
+                    <div class="row">
+                        <div class="col">
+                            <h3 class="text-white">Methods</h3>
+                        </div>
+                        <div class="col">
+                            <div class="row">
+                                <div class="col">
+                                    <form enctype="multipart/form-data" action="/cleanse/reset" method="POST">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn-new btn-secondary">Reset</button>
+                                    </form>
+                                </div>
+                                <div class="col">
+                                    <form enctype="multipart/form-data" action="/cleanse/cleanna" method="POST">
+                                        {% csrf_token %}
+
+                                        <button type="submit" class="btn-new btn-secondary">Apply</button>
                                 </div>
                             </div>
+                            <!-- <div style="display: inline-block;">
+                                <div style="text-align: right; display: inline-block;">
+                                    <button type="submit" style="display: inline-block;" class="btn-new btn-secondary">Reset</button>
+                                </div>
+                                <form enctype="multipart/form-data" action="/cleanse/cleanna" method="POST">
+                                    {% csrf_token %}
+                                    <div style="text-align: right;display: inline-block;">
+                                        <button type="submit" style="display: inline-block;" class="btn-new btn-secondary">Apply</button>
+                                    </div>
+                            </div> -->
                         </div>
+                    </div>
 
-                        <div class="tm-product-table-container">
-                            {% for col in col_names %}
-                            <div class="row">
-                                <button type="button" class="collapsible">{{col}}</button>
-                                <div class="content">
-                                    <div class="form-group">
-                                        <input type="radio" id="{{col}}_nofill" value="0" name="{{col}}" checked/>
-                                        <label for="{{col}}_nofill">No Fill</label>
-                                        <br>
-                                        <input type="radio" id="{{col}}_dropna" value="1" name="{{col}}" />
-                                        <label for="{{col}}_dropna">Drop NA</label>
-                                        <br>
-                                        <input type="radio" id="{{col}}_fillna" value="2" name="{{col}}" />
-                                        <label for="{{col}}_fillna">Fill NA</label>
-                                        <div class="fillna">
-                                            <select id="{{col}}_sel" name="{{col}}_sel" class="myselect">
+                    <div class="tm-product-table-container">
+                        {% for col in col_names %}
+                        <div class="row">
+                            <button type="button" class="collapsible">{{col}}</button>
+                            <div class="content">
+                                <div class="form-group">
+                                    <input type="radio" id="{{col}}_nofill" value="0" name="{{col}}" checked/>
+                                    <label for="{{col}}_nofill">No Fill</label>
+                                    <br>
+                                    <input type="radio" id="{{col}}_dropna" value="1" name="{{col}}" />
+                                    <label for="{{col}}_dropna">Drop NA</label>
+                                    <br>
+                                    <input type="radio" id="{{col}}_fillna" value="2" name="{{col}}" />
+                                    <label for="{{col}}_fillna">Fill NA</label>
+                                    <div class="fillna">
+                                        <select id="{{col}}_sel" name="{{col}}_sel" class="myselect">
                                             {% for method  in fillna_methods%} 
                                               <option value="{{method}}">{{method}}</option>
                                             {%endfor%}
                                         </select>
 
-                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <p></p>
-                            {%endfor%}
                         </div>
+                        <p></p>
+                        {%endfor%}
+                    </div>
                     </form>
                 </div>
 

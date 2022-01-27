@@ -4,6 +4,7 @@ from matplotlib.pyplot import get
 from home.views import getCatCols
 import pandas as pd
 import json
+from sklearn.impute import SimpleImputer
 from utilities.dataStorage import saveDb
 
 from utilities.dataStorage import readData
@@ -20,7 +21,7 @@ def cleanse(request):
         data=data[features+target]
         na_cols=data.isna().sum(axis=0)
         fillna_methods=['Mean','Median','Most Frequent','Constant']
-        return render(request,"clean.html",{'na_cols':list(zip(na_cols.values,na_cols.index)),'col_names':list(na_cols.index),'fillna_methods':fillna_methods})
+        return render(request,"clean.html",{'na_cols':list(zip(na_cols.values,na_cols.index)),'col_names':list(na_cols.index),'fillna_methods':fillna_methods,'rows':data.shape[0]})
 def getRows(request):
     username=request.COOKIES['username']
     df=readData(username+"_data")
@@ -46,12 +47,21 @@ def cleanna(request):
                 if(nalist[i][1]=="1"):
                     dataframe=dataframe.dropna(subset=[column])
                 elif(nalist[i][1]=="2"):
-                    pass
+                    method=nalist[i+1][1]
         data=dataframe[col]
         saveDb(data,username+"_data")
         na_cols=data.isna().sum(axis=0)
         fillna_methods=['Mean','Median','Most Frequent','Constant']
-        return render(request,"clean.html",{'na_cols':list(zip(na_cols.values,na_cols.index)),'col_names':list(na_cols.index),'fillna_methods':fillna_methods})
+        return render(request,"clean.html",{'na_cols':list(zip(na_cols.values,na_cols.index)),'col_names':list(na_cols.index),'fillna_methods':fillna_methods,"rows":data.shape[0]})
+def reset(request):
+    if(request.method=="POST"):
+        username=request.COOKIES['username']
+        data=readData(username+"_copy")
+        saveDb(data,username+"_data")
+        na_cols=data.isna().sum(axis=0)
+        fillna_methods=['Mean','Median','Most Frequent','Constant']
+        return render(request,"clean.html",{'na_cols':list(zip(na_cols.values,na_cols.index)),'col_names':list(na_cols.index),'fillna_methods':fillna_methods,"rows":data.shape[0]})
+
 
                     
 
