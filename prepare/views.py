@@ -10,21 +10,22 @@ from utilities.dataStorage import saveDb
 from utilities.dataStorage import readData
 
 # Create your views here.
-
+fillna_cat_methods=['Most Frequent','Constant']
+fillna_num_methods=['Mean','Median','Constant']
 def cleanse(request):
     if(request.method=="POST"):
         features=request.POST.getlist('columns')
         target=request.POST.getlist('target')
         username=request.COOKIES['username']
         data=readData(username+"_data")
-        cat_cols=data.select_dtypes(exclude="number").columns
         data=data[features+target]
         na_cols=data.isna().sum(axis=0)
-        fillna_methods=['Mean','Median','Most Frequent','Constant']
-        return render(request,"clean.html",{'na_cols':list(zip(na_cols.values,na_cols.index)),'col_names':list(na_cols.index),'fillna_methods':fillna_methods,'rows':data.shape[0]})
+        num_cols=get_num_cols(data)
+        return render(request,"clean.html",{'na_cols':list(zip(na_cols.values,na_cols.index)),'col_names':list(na_cols.index),
+        'rows':data.shape[0],'num_cols':num_cols,'fillna_cat_methods':fillna_cat_methods,'fillna_num_methods':fillna_num_methods})
 def getRows(request):
     username=request.COOKIES['username']
-    df=readData(username+"_data")
+    df=readData(username+"_copy")
     # print(df)
     rows=request.GET.get('rows',None)
     new_df=df.head(int(rows)).values.tolist()
@@ -37,7 +38,6 @@ def cleanna(request):
     if(request.method=="POST"):
         nalist=list(request.POST.items())[1:]
         username=request.COOKIES['username']
-        print(nalist)
         col=[]
         dataframe=readData(username+"_data")
         for i in range(len(nalist)):
@@ -48,20 +48,29 @@ def cleanna(request):
                     dataframe=dataframe.dropna(subset=[column])
                 elif(nalist[i][1]=="2"):
                     method=nalist[i+1][1]
+                    
+
         data=dataframe[col]
+        num_cols=get_num_cols(data)
         saveDb(data,username+"_data")
         na_cols=data.isna().sum(axis=0)
-        fillna_methods=['Mean','Median','Most Frequent','Constant']
-        return render(request,"clean.html",{'na_cols':list(zip(na_cols.values,na_cols.index)),'col_names':list(na_cols.index),'fillna_methods':fillna_methods,"rows":data.shape[0]})
+        return render(request,"clean.html",{'na_cols':list(zip(na_cols.values,na_cols.index)),'col_names':list(na_cols.index),
+        "rows":data.shape[0],'num_cols':num_cols,'fillna_cat_methods':fillna_cat_methods,
+        'fillna_num_methods':fillna_num_methods})
 def reset(request):
     if(request.method=="POST"):
         username=request.COOKIES['username']
+        cols=request.POST.getlist('col_names')
+        cols=cols[0].strip('[]').replace("'","").split(",")
+        cols=list(map(str.strip,cols))
+        print(cols)
         data=readData(username+"_copy")
+        data=data[cols]
         saveDb(data,username+"_data")
         na_cols=data.isna().sum(axis=0)
-        fillna_methods=['Mean','Median','Most Frequent','Constant']
-        return render(request,"clean.html",{'na_cols':list(zip(na_cols.values,na_cols.index)),'col_names':list(na_cols.index),'fillna_methods':fillna_methods,"rows":data.shape[0]})
-
-
-                    
-
+        num_cols=get_num_cols(data)
+        return render(request,"clean.html",{'na_cols':list(zip(na_cols.values,na_cols.index)),'col_names':list(na_cols.index),"rows":data.shape[0],
+        'num_cols':num_cols,'fillna_cat_methods':fillna_cat_methods,'fillna_num_methods':fillna_num_methods})
+def get_num_cols(data):
+    num_cols=list(data._get_numeric_data().columns.values)
+    return num_cols

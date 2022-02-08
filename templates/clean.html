@@ -175,6 +175,7 @@
                                     <form enctype="multipart/form-data" action="/cleanse/reset" method="POST">
                                         {% csrf_token %}
                                         <button type="submit" class="btn-new btn-secondary">Reset</button>
+                                        <input type="hidden" name="col_names" value="{{col_names}}" />
                                     </form>
                                 </div>
                                 <div class="col">
@@ -213,9 +214,15 @@
                                     <label for="{{col}}_fillna">Fill NA</label>
                                     <div class="fillna">
                                         <select id="{{col}}_sel" name="{{col}}_sel" class="myselect">
-                                            {% for method  in fillna_methods%} 
+                                            {% if col in num_cols %}
+                                            {% for method  in fillna_num_methods%} 
                                               <option value="{{method}}">{{method}}</option>
                                             {%endfor%}
+                                            {%else%}
+                                            {% for method  in fillna_cat_methods%} 
+                                              <option value="{{method}}">{{method}}</option>
+                                            {%endfor%}
+                                            {%endif%}
                                         </select>
 
                                     </div>
@@ -227,6 +234,9 @@
                     </div>
                     </form>
                 </div>
+
+            </div>
+            <div class="row">
 
             </div>
             <!-- </form> -->
