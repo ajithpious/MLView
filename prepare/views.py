@@ -10,8 +10,8 @@ from utilities.dataStorage import saveDb
 from utilities.dataStorage import readData
 
 # Create your views here.
-fillna_cat_methods=['Most Frequent','Constant']
-fillna_num_methods=['Mean','Median','Constant']
+fillna_cat_methods=['most_frequent']
+fillna_num_methods=['mean','median']
 def cleanse(request):
     if(request.method=="POST"):
         features=request.POST.getlist('columns')
@@ -19,13 +19,14 @@ def cleanse(request):
         username=request.COOKIES['username']
         data=readData(username+"_data")
         data=data[features+target]
+        saveDb(data,username+"_data")
         na_cols=data.isna().sum(axis=0)
         num_cols=get_num_cols(data)
         return render(request,"clean.html",{'na_cols':list(zip(na_cols.values,na_cols.index)),'col_names':list(na_cols.index),
         'rows':data.shape[0],'num_cols':num_cols,'fillna_cat_methods':fillna_cat_methods,'fillna_num_methods':fillna_num_methods})
 def getRows(request):
     username=request.COOKIES['username']
-    df=readData(username+"_copy")
+    df=readData(username+"_data")
     # print(df)
     rows=request.GET.get('rows',None)
     new_df=df.head(int(rows)).values.tolist()
@@ -48,7 +49,12 @@ def cleanna(request):
                     dataframe=dataframe.dropna(subset=[column])
                 elif(nalist[i][1]=="2"):
                     method=nalist[i+1][1]
+                    imputer=SimpleImputer(strategy=method)
+                    col_values=imputer.fit_transform(dataframe[column].values.reshape(-1,1))
+                    dataframe[column]=col_values
+
                     
+
 
         data=dataframe[col]
         num_cols=get_num_cols(data)

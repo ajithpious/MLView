@@ -289,6 +289,35 @@
 
                 });
             });
+            // display the rows
+            $(document).ready(function() {
+                $.ajax({
+                    url: '/cleanse/getRows',
+                    data: {
+                        "rows": 5
+                    },
+                    dataType: 'json',
+                    beforeSend: function() {
+                        $('#loader').removeClass('hidden')
+                    },
+                    success: function(data, status, xhr) {
+
+                        console.log(data)
+                        let columns = JSON.parse(data.columns);
+                        let values = JSON.parse(data.data);
+                        let table = document.querySelector("table[id='rowsTable']");
+                        table.innerHTML = "";
+                        generateTable(table, values)
+                        generateTableHead(table, columns)
+                    },
+                    complete: function() {
+                        $('#loader').addClass('hidden');
+                    }
+
+
+                });
+
+            });
 
             function generateTableHead(table, data) {
                 let thead = table.createTHead();
