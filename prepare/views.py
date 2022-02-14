@@ -22,7 +22,7 @@ def cleanse(request):
         saveDb(data,username+"_data")
         na_cols=data.isna().sum(axis=0)
         num_cols=get_num_cols(data)
-        return render(request,"clean.html",{'na_cols':list(zip(na_cols.values,na_cols.index)),'col_names':list(na_cols.index),
+        return render(request,"cleaning\clean.html",{'na_cols':list(zip(na_cols.values,na_cols.index)),'col_names':list(na_cols.index),
         'rows':data.shape[0],'num_cols':num_cols,'fillna_cat_methods':fillna_cat_methods,'fillna_num_methods':fillna_num_methods})
 def getRows(request):
     username=request.COOKIES['username']
@@ -60,7 +60,7 @@ def cleanna(request):
         num_cols=get_num_cols(data)
         saveDb(data,username+"_data")
         na_cols=data.isna().sum(axis=0)
-        return render(request,"clean.html",{'na_cols':list(zip(na_cols.values,na_cols.index)),'col_names':list(na_cols.index),
+        return render(request,"cleaning\clean.html",{'na_cols':list(zip(na_cols.values,na_cols.index)),'col_names':list(na_cols.index),
         "rows":data.shape[0],'num_cols':num_cols,'fillna_cat_methods':fillna_cat_methods,
         'fillna_num_methods':fillna_num_methods})
 def reset(request):
@@ -75,8 +75,14 @@ def reset(request):
         saveDb(data,username+"_data")
         na_cols=data.isna().sum(axis=0)
         num_cols=get_num_cols(data)
-        return render(request,"clean.html",{'na_cols':list(zip(na_cols.values,na_cols.index)),'col_names':list(na_cols.index),"rows":data.shape[0],
+        return render(request,"cleaning\clean.html",{'na_cols':list(zip(na_cols.values,na_cols.index)),'col_names':list(na_cols.index),"rows":data.shape[0],
         'num_cols':num_cols,'fillna_cat_methods':fillna_cat_methods,'fillna_num_methods':fillna_num_methods})
 def get_num_cols(data):
     num_cols=list(data._get_numeric_data().columns.values)
     return num_cols
+
+def modify(request):
+    if(request.method=="GET"):
+        pass
+    return render(request,"cleaning\modify.html")
+

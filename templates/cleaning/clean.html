@@ -236,8 +236,14 @@
                 </div>
 
             </div>
-            <div class="row">
+            <form id="form_modify" action="modify" method="post">
+                {% csrf_token %}
+            </form>
 
+            <div class="row">
+                <button type="submit" form="form_modify" class="btn btn-primary btn-block text-uppercase">
+                    <!-- <a href="modify">Next:Modify Data</a> -->Next:Modify Data
+                  </button>
             </div>
             <!-- </form> -->
             <footer class="tm-footer row tm-mt-small">
